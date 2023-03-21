@@ -21,3 +21,12 @@ python ./main.py
 - *api.py* Fitbit Web APIの実行
 - *graph.py* 心拍数やSpO2データをグラフ化し画像にする
 - *tweet.py* テキストと画像（任意）を投稿
+
+## 必要なファイル
+
+- *conf.json* fitbit conf file
+- *twitter_conf.json* twitter conf file
+
+## 出力されるファイル
+
+- **heart-spo.png** tweetする画像
