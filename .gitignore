@@ -1,0 +1,18 @@
+# folders
+.vscode/
+__pycache__/
+
+# 一時的ファイル
+err.txt
+
+# test用スクリプト
+test*
+
+# Confiential file
+*conf.json
+
+# 画像は共有しなくてよい
+*.png
+
+# server上で起動させるため
+*.sh
