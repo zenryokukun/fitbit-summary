@@ -54,7 +54,7 @@ def graph_heartbeat(data):
     plt.savefig("heart.png")
 
 
-def graph_heart_spo(heart, spo):
+def graph_heart_spo(heart, spo, sleep):
     """Web API `Heart Rate Time Series by Date`と
      `Get SpO2 Intraday by Date`のパース済レスポンスをグラフ化
     パース済レスポンスをグラフ化。
@@ -64,8 +64,11 @@ def graph_heart_spo(heart, spo):
         spo (dict): SPO2 Intraday パース済レスポンス
     """
     rot = 15
-    fig = plt.figure(facecolor=((0.2, 0.2, 0.2)), figsize=(8, 6))
+    fig = plt.figure(facecolor=((0.2, 0.2, 0.2)), figsize=(8, 8))
 
+    # ****************************************************
+    # plot heart-rate
+    # ****************************************************
     # YYYY-MM-DD
     ymd = heart["activities-heart"][0]["dateTime"]
     # [{"time":"HH:MM:SS","value":int}]
@@ -76,7 +79,7 @@ def graph_heart_spo(heart, spo):
     X = [full_date(ymd, d["time"]) for d in beats]
     Y = [d["value"] for d in beats]
 
-    ax = fig.add_subplot(211)
+    ax = fig.add_subplot(311)
     ax.set_facecolor((0.1, 0.1, 0.1))
     ax.set_title("Z-Heart-Beat")
     ax.set_xlabel("TIME")
@@ -88,11 +91,14 @@ def graph_heart_spo(heart, spo):
     plt.xticks(rotation=rot)
     plt.tight_layout()  # ラベルが見切れるの防止するために必要
 
+    # ****************************************************
+    # plot SpO2
+    # ****************************************************
     minutes = spo["minutes"]
     X2 = [datetime.datetime.strptime(
         d["minute"], "%Y-%m-%dT%H:%M:%S") for d in minutes]
     Y2 = [d["value"] for d in minutes]
-    ax2 = fig.add_subplot(212)
+    ax2 = fig.add_subplot(312)
     ax2.set_facecolor((0.1, 0.1, 0.1))
     ax2.set_title("Z-SpO2")
     ax2.set_xlabel("TIME")
@@ -101,6 +107,24 @@ def graph_heart_spo(heart, spo):
     ax2.ticklabel_format(style="plain", axis="y")
     ax2.grid(color="white")  # グリッドを表示
     plt.xticks(rotation=rot)
+    plt.tight_layout()
+
+    # ****************************************************
+    # plot sleep
+    # ****************************************************
+
+    stages = sleep["summary"]["stages"]
+    Y3 = [stages["deep"], stages["light"], stages["rem"], stages["wake"]]
+    ax3 = fig.add_subplot(313)
+    ax3.set_facecolor((0.1, 0.1, 0.1))
+    ax3.set_title("Z-Sleep")
+    ax3.set_ylabel("sleep stages")
+    ax3.set_xlabel("minutes")
+    ax3.set_axisbelow(True)
+    ax3.grid(color="white")  # グリッドを表示
+    ax3.barh([1, 2, 3, 4], Y3)
+    plt.yticks([1, 2, 3, 4], rotation=rot, labels=[
+               "deep", "light", "rem", "wake"])
     plt.tight_layout()
 
     plt.savefig("heart-spo.png")
@@ -113,4 +137,7 @@ if __name__ == "__main__":
     with open("test_heartbeat.json", "r") as f:
         heart = json.load(f)
 
-    graph_heart_spo(heart, spo)
+    with open("test_sleep.json") as f:
+        sleep = json.load(f)
+
+    graph_heart_spo(heart, spo, sleep)

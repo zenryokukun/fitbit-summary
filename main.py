@@ -52,7 +52,7 @@ def main():
     msg += "覚醒: " + min_to_hr(wake) + "\n"
 
     # グラフ生成(heart-spo.pngが出力される)
-    graph_heart_spo(heart, spo)
+    graph_heart_spo(heart, spo, sleep)
 
     # tweetする
     tweet(msg, "heart-spo.png")
