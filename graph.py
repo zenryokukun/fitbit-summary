@@ -54,7 +54,7 @@ def graph_heartbeat(data):
     plt.savefig("heart.png")
 
 
-def graph_heart_spo(heart, spo, sleep):
+def graph_heart_spo(heart, spo, sleep, img_path):
     """Web API `Heart Rate Time Series by Date`と
      `Get SpO2 Intraday by Date`のパース済レスポンスをグラフ化
     パース済レスポンスをグラフ化。
@@ -127,10 +127,11 @@ def graph_heart_spo(heart, spo, sleep):
                "deep", "light", "rem", "wake"])
     plt.tight_layout()
 
-    plt.savefig("heart-spo.png")
+    plt.savefig(img_path)
 
 
 if __name__ == "__main__":
+    from consts import TWEET_IMAGE
     with open("test_spo.json", "r") as f:
         spo = json.load(f)
 
@@ -140,4 +141,4 @@ if __name__ == "__main__":
     with open("test_sleep.json") as f:
         sleep = json.load(f)
 
-    graph_heart_spo(heart, spo, sleep)
+    graph_heart_spo(heart, spo, sleep, TWEET_IMAGE)

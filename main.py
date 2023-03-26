@@ -1,6 +1,7 @@
 from graph import graph_heart_spo
 from twitter import tweet
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
+from consts import TWEET_IMAGE
 import datetime
 
 
@@ -52,10 +53,10 @@ def main():
     msg += "覚醒: " + min_to_hr(wake) + "\n"
 
     # グラフ生成(heart-spo.pngが出力される)
-    graph_heart_spo(heart, spo, sleep)
+    graph_heart_spo(heart, spo, sleep, TWEET_IMAGE)
 
     # tweetする
-    tweet(msg, "heart-spo.png")
+    tweet(msg, TWEET_IMAGE)
 
 
 main()
