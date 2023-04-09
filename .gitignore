@@ -16,3 +16,9 @@ test*
 
 # server上で起動させるため
 *.sh
+
+# v1.1版。v2移行のため。
+_twitter.py
+
+# 外部のパッケージのため
+pytweet/

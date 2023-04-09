@@ -15,17 +15,67 @@ python3 ./main.py
 python ./main.py
 ```
 
+## Dependencies
+
+### *requests*
+
+```python
+pip install requests
+```
+
+### pytweet（githubからクローン）
+
+プロジェクトの直下にクローン。
+
+```bash
+git clone https://github.com/zenryokukun/pytweet.git
+```
+
+モジュール更新時はgit pullすること。メディア・アップロードは追加され次第対応予定なので、
+近いうちに更新する予定。
+
+```bash
+cd pytweet
+git pull
+```
+
+
 ## スクリプトについて
 
 - *main.py* エントリーポイント
 - *api.py* Fitbit Web APIの実行
 - *graph.py* 心拍数やSpO2データをグラフ化し画像にする
-- *tweet.py* テキストと画像（任意）を投稿
+- *pytweet/* Twitter API V2対応の外部パッケージ。(https://github.com/zenryokukun/pytweet.git)
 
 ## 必要なファイル
 
-- *conf.json* fitbit conf file
-- *twitter_conf.json* twitter conf file
+### ■ *conf.json* fitbit conf file
+
+```json
+{
+  "client_id": "your-client-id",
+  "client_secret": "your-client-secret",
+  "access_token": "your-access-token",
+  "refresh_token": "your-refresh-token",
+  "redirect_uri": "your-redirect-url",
+  "user_id": "your-user-id",
+  "scope": "your-scope"
+}
+```
+
+*client_id*,*access_token*,*refresh_token*の3点あれば動きます。
+
+### ■ *twitter_conf.json* twitter conf file
+
+```json
+{
+  "API_KEY": "MY-API-KEY",
+  "API_SECRET": "MY-API-SECRET",
+  "BEARER": "MY-BEARER",
+  "ACCESS_TOKEN": "MY-ACCESS-TOKEN",
+  "ACCESS_SECRET": "MY-ACCESS-SECRET"
+}
+```
 
 ## 出力されるファイル
 

@@ -3,11 +3,11 @@ Fitbit Web APIを実行してくれるスクリプト
 URL: https://dev.fitbit.com/build/reference/web-api/
 """
 
-from requests import Session
 from pprint import pprint
 from pathlib import Path
 import json
 from typing import Dict, List, TypedDict, Union
+from requests import Session
 
 
 class Conf(TypedDict):
@@ -155,7 +155,9 @@ def heartbeat(date: str = "today", period: str = "1d"):
     Returns:
         session.Response: レスポンス
     """
-    url = f"https://api.fitbit.com/1/user/-/activities/heart/date/{date}/{period}.json"
+    url = "https://api.fitbit.com/1/user/-/activities/heart/date/"\
+        f"{date}/{period}.json"
+
     headers = bearer_header()
     res = request(session.get, url, headers=headers)
     return res

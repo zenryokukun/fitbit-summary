@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import json
 import datetime
 
+
 plt.rcParams["text.color"] = "white"
 plt.rcParams['axes.labelcolor'] = "white"
 plt.rcParams['xtick.color'] = "white"
@@ -69,6 +70,7 @@ def graph_heart_spo(heart, spo, sleep, img_path):
     # ****************************************************
     # plot heart-rate
     # ****************************************************
+
     # YYYY-MM-DD
     ymd = heart["activities-heart"][0]["dateTime"]
     # [{"time":"HH:MM:SS","value":int}]
