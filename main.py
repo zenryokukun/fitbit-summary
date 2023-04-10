@@ -9,6 +9,8 @@ from pytweet import Pytweet
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
 from consts import TWEET_IMAGE, TWITTER
 
+TAGS = "#Fitbit #Fitbit_Web_API #Fitbitはサードパーティアプリを解放しろ"
+
 
 def min_to_hr(t: int) -> str:
     """XX(分)→〇時館△分に変換
@@ -73,6 +75,7 @@ def main():
     msg += "浅い睡眠: " + min_to_hr(light) + "\n"
     msg += "レム睡眠: " + min_to_hr(rem) + "\n"
     msg += "覚醒: " + min_to_hr(wake) + "\n"
+    msg += TAGS + "\n"
     # グラフ生成(heart-spo.pngが出力される)
     graph_heart_spo(heart, spo, sleep, TWEET_IMAGE)
 
