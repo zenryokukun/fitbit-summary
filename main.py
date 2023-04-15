@@ -55,8 +55,15 @@ def main():
         or sleep.get("errors") is not None \
         or act.get("errors") is not None
 
+    # エラーになってなくてもデータが入ってない場合もあるので
+    # 必要なデータ（キー）が存在しているかチェック
+    is_empty = heart.get("activities-heart") is None \
+        or act.get("summary") is None \
+        or sleep.get("summary") is None \
+        or spo.get("minutes") is None
+
     # error時はerrorツイートをして終了
-    if is_error:
+    if is_error or is_empty:
         msg = "Googleよ！インターネットの世界を牛耳り、世界を自分たちの手中に納めたつもりでいられるのも今のうちだ！"\
             "前世紀の巨人があなたを倒さんと、再び立ち上がったのだ！"\
             "「F I T B I T を 解 放 し ろ !」聞こえるか、MSの咆哮が！\n"
