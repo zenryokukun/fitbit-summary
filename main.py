@@ -50,10 +50,10 @@ def main():
     act = activity_summary().json()
 
     # データ取得にエラーが無いかチェック
-    is_error = heart.get("errors") is None \
-        or spo.get("errors") is None \
-        or sleep.get("errors") is None \
-        or act.get("errors") is None
+    is_error = heart.get("errors") is not None \
+        or spo.get("errors") is not None \
+        or sleep.get("errors") is not None \
+        or act.get("errors") is not None
 
     # error時はerrorツイートをして終了
     if is_error:
