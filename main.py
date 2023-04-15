@@ -43,10 +43,27 @@ def main():
     Fitbit APIで心拍、アクティビティ、睡眠、SPO2情報を取得。
     グラフ化してtwitterに投稿
     """
+    # データ取得
     heart = heartbeat().json()
     spo = spo2_intraday().json()
     sleep = sleep_log().json()
     act = activity_summary().json()
+
+    # データ取得にエラーが無いかチェック
+    is_error = heart.get("errors") is None \
+        or spo.get("errors") is None \
+        or sleep.get("errors") is None \
+        or act.get("errors") is None
+
+    # error時はerrorツイートをして終了
+    if is_error:
+        msg = "Googleよ！インターネットの世界を牛耳り、世界を自分たちの手中に納めたつもりでいられるのも今のうちだ！"\
+            "前世紀の巨人があなたを倒さんと、再び立ち上がったのだ！"\
+            "「F I T B I T を 解 放 し ろ !」聞こえるか、MSの咆哮が！\n"
+        msg += TAGS
+        twitter = Pytweet(TWITTER)
+        twitter.tweet(msg)
+        return
 
     # 歩数、フロア数、カロリーをactivityから取得
     act_summary = act["summary"]
