@@ -60,7 +60,8 @@ def main():
     is_empty = heart.get("activities-heart") is None \
         or act.get("summary") is None \
         or sleep.get("summary") is None \
-        or spo.get("minutes") is None
+        or spo.get("minutes") is None \
+        or sleep["summary"].get("stages") is None
 
     # error時はerrorツイートをして終了
     if is_error or is_empty:
