@@ -57,16 +57,16 @@ def main():
 
     # エラーになってなくてもデータが入ってない場合もあるので
     # 必要なデータ（キー）が存在しているかチェック
+    # spo.get("minutes") is None \ は除外。しばしば取得できないので。
+    # sleep["summary"].get("stages") is Noneも除外。しばしば取得できないので。
     is_empty = heart.get("activities-heart") is None \
         or act.get("summary") is None \
-        or sleep.get("summary") is None \
-        or spo.get("minutes") is None \
-        or sleep["summary"].get("stages") is None
+        or sleep.get("summary") is None
 
     # error時はerrorツイートをして終了
     if is_error or is_empty:
         msg = "[" + today() + "]" + "\n"
-        msg += "Googleよ！インターネットの世界を牛耳り、世界を自分たちの手中に納めたつもりでいられるのも今のうちだ！"\
+        msg += "Googleよ！インターネットの世界を牛耳り、世界を手中に納めたつもりでいられるのも今のうちだ！"\
             "前世紀の巨人があなたを倒さんと、再び立ち上がったのだ！"\
             "「F I T B I T を 解 放 し ろ !」聞こえるか、MSの咆哮が！\n"
         msg += TAGS
@@ -83,10 +83,12 @@ def main():
     # 睡眠情報をsleepから取得
     sleep_summary = sleep["summary"]
     bed_time = sleep_summary["totalTimeInBed"]
-    deep = sleep_summary["stages"]["deep"]
-    light = sleep_summary["stages"]["light"]
-    rem = sleep_summary["stages"]["rem"]
-    wake = sleep_summary["stages"]["wake"]
+    # sleep_summary["stages"]が設定されていない場合もあるので、、、
+    is_stages = sleep_summary.get("stages")
+    deep = 0 if not is_stages else sleep_summary["stages"]["deep"]
+    light = 0 if not is_stages else sleep_summary["stages"]["light"]
+    rem = 0 if not is_stages else sleep_summary["stages"]["rem"]
+    wake = 0 if not is_stages else sleep_summary["stages"]["wake"]
 
     # 上記からメッセージを生成
     msg = "💛全力君・絶望の鼓動(Heart-Beat)💛\n"

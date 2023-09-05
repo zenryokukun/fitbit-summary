@@ -96,39 +96,41 @@ def graph_heart_spo(heart, spo, sleep, img_path):
     # ****************************************************
     # plot SpO2
     # ****************************************************
-    minutes = spo["minutes"]
-    X2 = [datetime.datetime.strptime(
-        d["minute"], "%Y-%m-%dT%H:%M:%S") for d in minutes]
-    Y2 = [d["value"] for d in minutes]
-    ax2 = fig.add_subplot(312)
-    ax2.set_facecolor((0.1, 0.1, 0.1))
-    ax2.set_title("Z-SpO2")
-    ax2.set_xlabel("TIME")
-    ax2.set_ylabel("SpO2")
-    ax2.plot(X2, Y2, color="turquoise")
-    ax2.ticklabel_format(style="plain", axis="y")
-    ax2.grid(color="white")  # グリッドを表示
-    plt.xticks(rotation=rot)
-    plt.tight_layout()
+    if spo.get("minutes") is not None:
+        minutes = spo["minutes"]
+        X2 = [datetime.datetime.strptime(
+            d["minute"], "%Y-%m-%dT%H:%M:%S") for d in minutes]
+        Y2 = [d["value"] for d in minutes]
+        ax2 = fig.add_subplot(312)
+        ax2.set_facecolor((0.1, 0.1, 0.1))
+        ax2.set_title("Z-SpO2")
+        ax2.set_xlabel("TIME")
+        ax2.set_ylabel("SpO2")
+        ax2.plot(X2, Y2, color="turquoise")
+        ax2.ticklabel_format(style="plain", axis="y")
+        ax2.grid(color="white")  # グリッドを表示
+        plt.xticks(rotation=rot)
+        plt.tight_layout()
 
     # ****************************************************
     # plot sleep
     # ****************************************************
+    if sleep["summary"].get("stages"):
+        stages = sleep["summary"]["stages"]
+        Y3 = [stages["deep"], stages["light"], stages["rem"], stages["wake"]]
+        ax3 = fig.add_subplot(313)
+        ax3.set_facecolor((0.1, 0.1, 0.1))
+        ax3.set_title("Z-Sleep")
+        ax3.set_ylabel("sleep stages")
+        ax3.set_xlabel("minutes")
+        ax3.set_axisbelow(True)
+        ax3.grid(color="white")  # グリッドを表示
+        ax3.barh([1, 2, 3, 4], Y3)
+        plt.yticks([1, 2, 3, 4], rotation=rot, labels=[
+            "deep", "light", "rem", "wake"])
+        plt.tight_layout()
 
-    stages = sleep["summary"]["stages"]
-    Y3 = [stages["deep"], stages["light"], stages["rem"], stages["wake"]]
-    ax3 = fig.add_subplot(313)
-    ax3.set_facecolor((0.1, 0.1, 0.1))
-    ax3.set_title("Z-Sleep")
-    ax3.set_ylabel("sleep stages")
-    ax3.set_xlabel("minutes")
-    ax3.set_axisbelow(True)
-    ax3.grid(color="white")  # グリッドを表示
-    ax3.barh([1, 2, 3, 4], Y3)
-    plt.yticks([1, 2, 3, 4], rotation=rot, labels=[
-               "deep", "light", "rem", "wake"])
-    plt.tight_layout()
-
+    # ファイルに保存
     plt.savefig(img_path)
 
 
