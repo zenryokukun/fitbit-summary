@@ -56,10 +56,11 @@ def graph_heartbeat(data):
 
 
 def graph_heart_spo(heart, spo, sleep, img_path):
-    """Web API `Heart Rate Time Series by Date`と
+    """
+    Web API `Heart Rate Time Series by Date`と
      `Get SpO2 Intraday by Date`のパース済レスポンスをグラフ化
     パース済レスポンスをグラフ化。
-
+    # 2024-10-7頃から`Heart Rate Time Series by Date`がエラーになった。APIの仕様変更っぽい？`Get Heart Rate Intraday by Date`に変更した。
     Args:
         heart (dict): HeartRate パース済レスポンス
         spo (dict): SPO2 Intraday パース済レスポンス
@@ -75,7 +76,6 @@ def graph_heart_spo(heart, spo, sleep, img_path):
     ymd = heart["activities-heart"][0]["dateTime"]
     # [{"time":"HH:MM:SS","value":int}]
     beats = heart["activities-heart-intraday"]["dataset"]
-
     # X軸とY軸データを抽出。Ｘ軸はdatetimeオブジェクトだと
     # ラベルを間引いて表示してくれるため、文字列→datetimeに変換
     X = [full_date(ymd, d["time"]) for d in beats]

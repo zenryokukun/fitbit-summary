@@ -145,22 +145,22 @@ def request(method, url, **kw):
     return res
 
 
-def heartbeat(date: str = "today", period: str = "1d"):
-    """心拍数を取得しレスポンスを返す。パースはしない。
+# def heartbeat(date: str = "today", period: str = "1d"):
+#     """心拍数を取得しレスポンスを返す。パースはしない。
 
-    Args:
-        date (str, optional): 取得する日付。yyyy-mm-ddで指定も可能。Defaults to "today".
-        period (str, optional): 取得する範囲。1d,7d,30d,1w,1m。 Defaults to "1d".
+#     Args:
+#         date (str, optional): 取得する日付。yyyy-mm-ddで指定も可能。Defaults to "today".
+#         period (str, optional): 取得する範囲。1d,7d,30d,1w,1m。 Defaults to "1d".
 
-    Returns:
-        session.Response: レスポンス
-    """
-    url = "https://api.fitbit.com/1/user/-/activities/heart/date/"\
-        f"{date}/{period}.json"
+#     Returns:
+#         session.Response: レスポンス
+#     """
+#     url = "https://api.fitbit.com/1/user/-/activities/heart/date/"\
+#         f"{date}/{period}.json"
 
-    headers = bearer_header()
-    res = request(session.get, url, headers=headers)
-    return res
+#     headers = bearer_header()
+#     res = request(session.get, url, headers=headers)
+#     return res
 
 
 def breath_rate(date: str = "today"):
@@ -263,6 +263,22 @@ def activity_summary(date: str = "today"):
         session.Response: レスポンス
     """
     url = f"https://api.fitbit.com/1/user/-/activities/date/{date}.json"
+    headers = bearer_header()
+    res = request(session.get, url, headers=headers)
+    return res
+
+
+def heart_intraday(date:str = "today"):
+    """_心拍数をグラフ化するために必要
+    参考
+    https://dev.fitbit.com/build/reference/web-api/intraday/get-heartrate-intraday-by-date/
+    Args:
+        date (str, optional): _description_. Defaults to "today".
+
+    Returns:
+        _type_: _description_
+    """
+    url = f"https://api.fitbit.com/1/user/-/activities/heart/date/{date}/1d/1min.json"
     headers = bearer_header()
     res = request(session.get, url, headers=headers)
     return res

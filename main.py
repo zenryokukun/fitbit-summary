@@ -6,7 +6,7 @@ ex: main()
 import datetime
 from graph import graph_heart_spo
 from pytweet import Pytweet
-from api import heartbeat, spo2_intraday, activity_summary, sleep_log
+from api import spo2_intraday, activity_summary, sleep_log,heart_intraday
 from consts import TWEET_IMAGE, TWITTER
 
 TAGS = "#Fitbit #Fitbit_Web_API #Fitbitはサードパーティアプリを解放しろ"
@@ -44,10 +44,10 @@ def main():
     グラフ化してtwitterに投稿
     """
     # データ取得
-    heart = heartbeat().json()
+    heart = heart_intraday().json()
     spo = spo2_intraday().json()
     sleep = sleep_log().json()
-    act = activity_summary().json()
+    act = activity_summary(today()).json()
 
     # データ取得にエラーが無いかチェック
     is_error = heart.get("errors") is not None \
@@ -59,7 +59,7 @@ def main():
     # 必要なデータ（キー）が存在しているかチェック
     # spo.get("minutes") is None \ は除外。しばしば取得できないので。
     # sleep["summary"].get("stages") is Noneも除外。しばしば取得できないので。
-    is_empty = heart.get("activities-heart") is None \
+    is_empty = heart.get("activities-heart-intraday") is None \
         or act.get("summary") is None \
         or sleep.get("summary") is None
 
