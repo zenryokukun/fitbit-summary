@@ -35,7 +35,8 @@ def today() -> str:
         str: YYYY-MM-DD
     """
     now = datetime.datetime.now()
-    return f"{now.year}-{now.month}-{now.day}"
+    fmt = datetime.datetime.strftime(now,"%Y-%m-%d")
+    return fmt
 
 
 def main():
@@ -74,6 +75,8 @@ def main():
         twitter.tweet(msg)
         return
 
+ 
+
     # 歩数、フロア数、カロリーをactivityから取得
     act_summary = act["summary"]
     steps = act_summary["steps"]
@@ -108,7 +111,6 @@ def main():
     graph_heart_spo(heart, spo, sleep, TWEET_IMAGE)
 
     # tweetする
-    # tweet(msg, TWEET_IMAGE)
     twitter = Pytweet(TWITTER)
     twitter.tweet(msg, TWEET_IMAGE)
 
