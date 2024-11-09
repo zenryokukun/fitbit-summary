@@ -66,6 +66,10 @@ def main():
 
     # error時はerrorツイートをして終了
     if is_error or is_empty:
+        print(heart)
+        print(spo)
+        print(sleep)
+        print(act)
         msg = "[" + today() + "]" + "\n"
         msg += "Googleよ！インターネットの世界を牛耳り、世界を手中に納めたつもりでいられるのも今のうちだ！"\
             "前世紀の巨人があなたを倒さんと、再び立ち上がったのだ！"\
