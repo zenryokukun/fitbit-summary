@@ -187,7 +187,7 @@ def sleep_log(date: str = "today"):
     Returns:
         session.Response: レスポンス
     """
-    url = f" https://api.fitbit.com/1.2/user/-/sleep/date/{date}.json"
+    url = f"https://api.fitbit.com/1.2/user/-/sleep/date/{date}.json"
     headers = bearer_header()
     res = request(session.get, url, headers=headers)
     return res

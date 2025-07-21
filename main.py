@@ -44,10 +44,12 @@ def main():
     Fitbit APIで心拍、アクティビティ、睡眠、SPO2情報を取得。
     グラフ化してtwitterに投稿
     """
+    # 一部apiが'today'指定だとエラーになるようになったのでyyyy-mm-ddに変更
+    dt = today()
     # データ取得
-    heart = heart_intraday().json()
-    spo = spo2_intraday().json()
-    sleep = sleep_log().json()
+    heart = heart_intraday(dt).json()
+    spo = spo2_intraday(dt).json()
+    sleep = sleep_log(dt).json()
     act = activity_summary(today()).json()
 
     # データ取得にエラーが無いかチェック
@@ -60,9 +62,9 @@ def main():
     # 必要なデータ（キー）が存在しているかチェック
     # spo.get("minutes") is None \ は除外。しばしば取得できないので。
     # sleep["summary"].get("stages") is Noneも除外。しばしば取得できないので。
+    # sleep.get("summary") is Noneを除外。デバイスをつけずに寝るとNoneになるので、、、
     is_empty = heart.get("activities-heart-intraday") is None \
-        or act.get("summary") is None \
-        or sleep.get("summary") is None
+        or act.get("summary") is None 
 
     # error時はerrorツイートをして終了
     if is_error or is_empty:
@@ -88,15 +90,25 @@ def main():
     calories = act_summary["caloriesOut"]
 
     # 睡眠情報をsleepから取得
-    sleep_summary = sleep["summary"]
-    bed_time = sleep_summary["totalTimeInBed"]
-    # sleep_summary["stages"]が設定されていない場合もあるので、、、
-    is_stages = sleep_summary.get("stages")
-    deep = 0 if not is_stages else sleep_summary["stages"]["deep"]
-    light = 0 if not is_stages else sleep_summary["stages"]["light"]
-    rem = 0 if not is_stages else sleep_summary["stages"]["rem"]
-    wake = 0 if not is_stages else sleep_summary["stages"]["wake"]
+    # デバイスを付けずに寝るとsleep情報は取れないが、処理は進めるため上段でチェックしていない
+    # sleep["summary"]がNoneの可能性もあるため留意
+    # Noneの可能性を考慮し、はじめに必要な変数をゼロで初期化
+    bed_time = 0
+    deep = 0
+    light = 0
+    rem = 0
+    wake = 0
 
+    sleep_summary = sleep.get("summary")
+    # sleep summaryが取れた場合の処理
+    if sleep_summary:
+        deep = sleep_summary["stages"]["deep"]
+        light = sleep_summary["stages"]["light"]
+        rem = sleep_summary["stages"]["rem"]
+        wake = sleep_summary["stages"]["wake"]
+        if sleep_summary["totalTimeInBed"]:
+            bed_time = sleep_summary["totalTimeInBed"]
+   
     # 上記からメッセージを生成
     msg = "💛全力君・絶望の鼓動(Heart-Beat)💛\n"
     msg += "[" + today() + "]" + "\n"
